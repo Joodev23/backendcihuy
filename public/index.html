@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pterodactyl Manager - Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="login-form">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                            <line x1="8" y1="21" x2="16" y2="21"/>
+                            <line x1="12" y1="17" x2="12" y2="21"/>
+                            <circle cx="7" cy="10" r="1" fill="currentColor"/>
+                            <circle cx="12" cy="10" r="1" fill="currentColor"/>
+                            <circle cx="17" cy="10" r="1" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h2>Pterodactyl Manager</h2>
+                </div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+                <div id="loginError" class="error-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="dashboard" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                        <line x1="8" y1="21" x2="16" y2="21"/>
+                        <line x1="12" y1="17" x2="12" y2="21"/>
+                        <circle cx="7" cy="10" r="1" fill="currentColor"/>
+                        <circle cx="12" cy="10" r="1" fill="currentColor"/>
+                        <circle cx="17" cy="10" r="1" fill="currentColor"/>
+                    </svg>
+                </div>
+                <h3>Pterodactyl Manager</h3>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#" class="nav-link active" data-section="overview">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"/>
+                            <rect x="14" y="3" width="7" height="7"/>
+                            <rect x="14" y="14" width="7" height="7"/>
+                            <rect x="3" y="14" width="7" height="7"/>
+                        </svg>
+                        Dashboard Overview
+                    </a></li>
+                    <li><a href="#" class="nav-link" data-section="create-panel">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="16"/>
+                            <line x1="8" y1="12" x2="16" y2="12"/>
+                        </svg>
+                        Create Panel
+                    </a></li>
+                    <li><a href="#" class="nav-link" data-section="server-list">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                            <line x1="8" y1="21" x2="16" y2="21"/>
+                            <line x1="12" y1="17" x2="12" y2="21"/>
+                        </svg>
+                        Server List
+                    </a></li>
+                    <li><a href="#" class="nav-link" data-section="admin-management">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        Admin Management
+                    </a></li>
+                    <li><a href="#" class="nav-link" data-section="bulk-operations">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 11H5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2h-4"/>
+                            <path d="M9 7L12 4L15 7"/>
+                            <path d="M12 4V14"/>
+                        </svg>
+                        Bulk Operations
+                    </a></li>
+                    <li><a href="#" class="nav-link" data-section="telegram-integration">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 2L11 13"/>
+                            <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
+                        </svg>
+                        Telegram Integration
+                    </a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn btn-secondary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16,17 21,12 16,7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                    Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <h1 id="pageTitle">Dashboard Overview</h1>
+                <div class="user-info">
+                    <span>Welcome, <strong>Joo</strong></span>
+                </div>
+            </header>
+
+            <!-- Dashboard Overview Section -->
+            <section id="overview" class="content-section active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12,6 12,12 16,14"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="activeServers">0</h3>
+                            <p>Active Servers</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon red">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="stoppedServers">0</h3>
+                            <p>Stopped Servers</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="totalUsers">0</h3>
+                            <p>Total Users</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon orange">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"/>
+                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="expiringServers">0</h3>
+                            <p>Expiring Soon</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Recent Server Activity</h3>
+                        </div>
+                        <div class="card-content">
+                            <div id="recentActivity" class="activity-list">
+                                <p class="empty-state">No recent activity to display</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Quick Actions</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="quick-actions">
+                                <button class="btn btn-primary" onclick="showSection('create-panel')">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="12" y1="8" x2="12" y2="16"/>
+                                        <line x1="8" y1="12" x2="16" y2="12"/>
+                                    </svg>
+                                    Create Panel
+                                </button>
+                                <button class="btn btn-secondary" onclick="refreshData()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="23,4 23,10 17,10"/>
+                                        <polyline points="1,20 1,14 7,14"/>
+                                        <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+                                    </svg>
+                                    Refresh Data
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Create Panel Section -->
+            <section id="create-panel" class="content-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Create New Panel</h3>
+                    </div>
+                    <div class="card-content">
+                        <form id="createPanelForm" class="form-grid">
+                            <div class="form-group">
+                                <label for="serverName">Server Name</label>
+                                <input type="text" id="serverName" name="serverName" required placeholder="Enter server name">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" required placeholder="user@example.com">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="ramAllocation">RAM Allocation</label>
+                                <select id="ramAllocation" name="ramAllocation" required>
+                                    <option value="">Select RAM</option>
+                                    <option value="1024">1 GB</option>
+                                    <option value="2048">2 GB</option>
+                                    <option value="3072">3 GB</option>
+                                    <option value="4096">4 GB</option>
+                                    <option value="5120">5 GB</option>
+                                    <option value="6144">6 GB</option>
+                                    <option value="7168">7 GB</option>
+                                    <option value="8192">8 GB</option>
+                                    <option value="9216">9 GB</option>
+                                    <option value="10240">10 GB</option>
+                                    <option value="0">Unlimited</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="telegramId">Telegram ID (Optional)</label>
+                                <input type="text" id="telegramId" name="telegramId" placeholder="Enter Telegram user ID">
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="12" y1="8" x2="12" y2="16"/>
+                                        <line x1="8" y1="12" x2="16" y2="12"/>
+                                    </svg>
+                                    Create Panel
+                                </button>
+                                <button type="reset" class="btn btn-secondary">Reset Form</button>
+                            </div>
+                        </form>
+                        <div id="createPanelResult" class="result-message"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Server List Section -->
+            <section id="server-list" class="content-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Server Management</h3>
+                        <div class="header-actions">
+                            <button class="btn btn-success" onclick="startAllServers()">Start All</button>
+                            <button class="btn btn-danger" onclick="stopAllServers()">Stop All</button>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="server-filters">
+                            <div class="filter-group">
+                                <label>Filter by status:</label>
+                                <div class="filter-buttons">
+                                    <button class="filter-btn active" data-filter="all">All</button>
+                                    <button class="filter-btn" data-filter="active">Active</button>
+                                    <button class="filter-btn" data-filter="stopped">Stopped</button>
+                                    <button class="filter-btn" data-filter="expiring">Expiring Soon</button>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="loadServers()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="23,4 23,10 17,10"/>
+                                    <polyline points="1,20 1,14 7,14"/>
+                                    <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+                                </svg>
+                                Refresh
+                            </button>
+                        </div>
+                        
+                        <div class="servers-count">
+                            <h4 id="serversCountTitle">Servers (0)</h4>
+                        </div>
+                        
+                        <div id="serversList" class="servers-grid">
+                            <div class="loading">Loading servers...</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Admin Management Section -->
+            <section id="admin-management" class="content-section">
+                <div class="admin-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Create New Admin</h3>
+                        </div>
+                        <div class="card-content">
+                            <h4>Admin Configuration</h4>
+                            
+                            <form id="createAdminForm" class="admin-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="adminUsername">Admin Username</label>
+                                        <input type="text" id="adminUsername" name="adminUsername" placeholder="Enter admin username" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="adminEmail">Admin Email</label>
+                                        <input type="email" id="adminEmail" name="adminEmail" placeholder="admin@example.com" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="permissionLevel">Permissions Level</label>
+                                    <select id="permissionLevel" name="permissionLevel">
+                                        <option value="full">Full Administrator</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button type="button" class="btn btn-secondary">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Create Admin</button>
+                                </div>
+                            </form>
+                            <div id="createAdminResult" class="result-message"></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Admin Management</h3>
+                            <button class="btn btn-secondary" onclick="loadAdmins()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="23,4 23,10 17,10"/>
+                                    <polyline points="1,20 1,14 7,14"/>
+                                    <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+                                </svg>
+                                Refresh
+                            </button>
+                        </div>
+                        <div class="card-content">
+                            <h4 id="administratorsCount">Administrators (0)</h4>
+                            
+                            <div class="admin-table-container">
+                                <table class="admin-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ADMIN</th>
+                                            <th>PERMISSIONS</th>
+                                            <th>CREATED</th>
+                                            <th>LAST LOGIN</th>
+                                            <th>ACTIONS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="adminsTableBody">
+                                        <tr>
+                                            <td colspan="5" class="loading">Loading administrators...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bulk Operations Section -->
+            <section id="bulk-operations" class="content-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Bulk Operations</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="caution-warning">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                <line x1="12" y1="9" x2="12" y2="13"/>
+                                <line x1="12" y1="17" x2="12.01" y2="17"/>
+                            </svg>
+                            <span>Caution Required</span>
+                            <p>Bulk operations are permanent and cannot be undone. Admin accounts are protected against bulk user operations.</p>
+                        </div>
+
+                        <div class="bulk-operations-grid">
+                            <div class="bulk-section">
+                                <h4>Server Operations</h4>
+                                <div class="bulk-operation-item">
+                                    <div class="operation-info">
+                                        <h5>Start All Servers</h5>
+                                        <p>Start all currently stopped servers</p>
+                                    </div>
+                                    <button class="btn btn-success" onclick="startAllServers()">Start All</button>
+                                </div>
+                                <div class="bulk-operation-item">
+                                    <div class="operation-info">
+                                        <h5>Stop All Servers</h5>
+                                        <p>Stop all currently running servers</p>
+                                    </div>
+                                    <button class="btn btn-danger" onclick="stopAllServers()">Stop All</button>
+                                </div>
+                                <div class="bulk-operation-item">
+                                    <div class="operation-info">
+                                        <h5>Delete All Servers</h5>
+                                        <p>Delete all servers (admin protected)</p>
+                                    </div>
+                                    <button class="btn btn-danger" onclick="deleteAllServers()">Delete All</button>
+                                </div>
+                            </div>
+
+                            <div class="bulk-section">
+                                <h4>User Operations</h4>
+                                <div class="bulk-operation-item">
+                                    <div class="operation-info">
+                                        <h5>Export User Data</h5>
+                                        <p>Export user information to CSV</p>
+                                    </div>
+                                    <button class="btn btn-primary" onclick="exportUserData()">Export</button>
+                                </div>
+                                <div class="bulk-operation-item">
+                                    <div class="operation-info">
+                                        <h5>Notify Expiring</h5>
+                                        <p>Send Telegram alerts for expiring servers</p>
+                                    </div>
+                                    <button class="btn btn-warning" onclick="notifyExpiring()">Notify</button>
+                                </div>
+                                <div class="bulk-operation-item">
+                                    <div class="operation-info">
+                                        <h5>Delete All Users</h5>
+                                        <p>Delete all users (admin protected)</p>
+                                    </div>
+                                    <button class="btn btn-danger" onclick="deleteAllUsers()">Delete All</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="recent-operations">
+                            <h4>Recent Bulk Operations</h4>
+                            <div id="recentBulkOperations" class="operations-list">
+                                <p class="empty-state">No recent bulk operations to display. Operations will appear here when performed.</p>
+                            </div>
+                        </div>
+
+                        <div id="bulkOperationResult" class="result-message"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Telegram Integration Section -->
+            <section id="telegram-integration" class="content-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Telegram Integration</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="telegram-config">
+                            <h4>Bot Configuration</h4>
+                            
+                            <div class="form-group">
+                                <label for="botToken">Bot Token</label>
+                                <input type="text" id="botToken" placeholder="7789321645:AAEh6BiwNR6SgKI_8ZIE-SfJm3J7SFS5yvw" readonly>
+                                <small>(Read Only)</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="adminChatId">Admin Chat ID</label>
+                                <input type="text" id="adminChatId" placeholder="Enter admin chat ID" value="7978512548">
+                            </div>
+                            
+                            <div class="bot-status">
+                                <label>Bot Status</label>
+                                <div class="status-indicator">
+                                    <span class="status-dot online"></span>
+                                    <span class="status-text">Connected</span>
+                                </div>
+                            </div>
+                            
+                            <div class="telegram-actions">
+                                <button class="btn btn-primary" onclick="testBotConnection()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 2L11 13"/>
+                                        <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
+                                    </svg>
+                                    Test Bot Connection
+                                </button>
+                                <button class="btn btn-success" onclick="saveTelegramSettings()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                                        <polyline points="17,21 17,13 7,13 7,21"/>
+                                        <polyline points="7,3 7,8 15,8"/>
+                                    </svg>
+                                    Save Settings
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="notification-settings">
+                            <h4>Notification Settings</h4>
+                            
+                            <div class="notification-item">
+                                <div class="notification-info">
+                                    <h5>Server Creation</h5>
+                                    <p>Notify when new servers are created</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="notifyServerCreation" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="notification-item">
+                                <div class="notification-info">
+                                    <h5>Server Expiration</h5>
+                                    <p>Notify 30 days before expiration</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="notifyServerExpiration" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="notification-item">
+                                <div class="notification-info">
+                                    <h5>Status Changes</h5>
+                                    <p>Notify on server start/stop events</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="notifyStatusChanges">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="notification-item">
+                                <div class="notification-info">
+                                    <h5>Error Alerts</h5>
+                                    <p>Notify on system errors</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="notifyErrors" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="recent-notifications">
+                            <h4>Recent Notifications</h4>
+                            <div id="recentNotifications" class="notifications-list">
+                                <p class="empty-state">No recent notifications to display. Notification history will appear here when messages are sent.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Loading Modal -->
+    <div id="loadingModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="loading-spinner">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12a9 9 0 11-6.219-8.56"/>
+                </svg>
+                <p>Processing...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
